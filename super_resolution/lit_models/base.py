@@ -59,7 +59,7 @@ class BaseLitModule(pl.LightningModule):
 
         self.train_psnr = PSNR()
         self.val_psnr = PSNR()
-        self.test_acc = PSNR()
+        self.test_psnr = PSNR()
 
     @staticmethod
     def add_to_argparse(parser):
@@ -82,4 +82,25 @@ class BaseLitModule(pl.LightningModule):
     def forward(self,x):
         return self.model(x)
 
-    def training_step()       
+    def training_step(self,batch,batch_idx):
+        xb,yb = batch
+        preds = self(xb)
+        loss = self.loss_fn(preds,yb)
+        self.log("train_loss",loss)
+        self.train_psnr(preds,yb)
+        self.log("train_psnr",self.train_psnr,on_step = False, on_epoch = True)
+        return loss
+
+    def validation_step(self,batch,batch_idx):
+        xb,yb = batch
+        preds = self(xb)
+        loss = self.loss_fn(preds,yb)
+        self.log("val_loss",loss,prog_bar = True)
+        self.val_psnr(preds,yb)
+        self.log("val_psnr",self.val_psnr,on_step = False, on_epoch = True,prog_bar = True)
+      
+    def test_step(self,batch,batch_idx):
+        xb,yb = batch
+        preds = self(xb)
+        self.test_psnr(preds,yb)
+        self.log("test_psnr",self.test_psnr,on_step = False, on_epoch = True)
