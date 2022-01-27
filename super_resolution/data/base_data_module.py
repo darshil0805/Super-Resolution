@@ -23,9 +23,6 @@ class BaseDataModule(pl.LightningDataModule):
         self.on_gpu = isinstance(self.args.get("gpus", None), (str, int))
 
         # Make sure to set the variables below in subclasses
-        self.dims: Tuple[int, ...]
-        self.output_dims: Tuple[int, ...]
-        self.mapping: Collection
         self.data_train: Union[Dataset, ConcatDataset]
         self.data_val: Union[Dataset, ConcatDataset]
         self.data_test: Union[Dataset, ConcatDataset]
