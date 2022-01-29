@@ -57,4 +57,26 @@ class T91(BaseDataModule):
     '''
     def __init__(self,args : argparse.Namespace) -> None:
         super().__init__(args)
+        self.path_train = path_train
+        self.path_test = path_test
+        self.train_transform = transforms.Compose([transforms.ToTensor()])
+        self.target_transform = transforms.Compose([transforms.ToTensor()])
+        self.dims = (1,33,33)
+        self.output_dims = (1,33,33)
+
+    def prepare_data(self,*args,*kwargs):
+        '''Downloading Datasets'''
+        BaseT91(self.path_train)
+        BaseT91(self.path_test)
+
+    def setup(self, stage = None) -> None:
+        '''Spliting into train, val,test'''
+        T91 = BaseT91(self.path_train,train_transform = self.train_transform,target_transform = self.target_transform)
+        num = len(T91)
+        val = int(0.3*num)
+        train = num - val
+        self.data_train,self.data_val = random_split(T91,[train,val])
+        self.data_test = BaseT91(self.path_train,train_transform = self.train_transform,target_transform = self.target_transform)
+
+    
         
