@@ -1,7 +1,7 @@
 import argparse
 import pytorch_lightning as pl 
 import torch
-from torchmetrics import Metric
+from pytorch_lightning.metrics import Metric
 import torch.nn.functional as F 
 
 OPTIMIZER = 'SGD'
@@ -24,11 +24,11 @@ class PSNR(Metric):
         super().__init__(dist_sync_on_step = dist_sync_on_step)
 
         self.add_state("batch_psnr",default = torch.tensor(0),dist_reduce_fx = "sum")
-        self.add_state("total"),default = torch.tensor(0),dist_reduce_fx = "sum")
+        self.add_state("total",default = torch.tensor(0),dist_reduce_fx = "sum")
 
     def update(self,preds : torch.tensor,target : torch.tensor):
         preds,target = self._input_format(preds,target)
-        assert preds.shape = target.shape
+        #assert preds.shape = target.shape
 
         self.batch_psnr += torch.sum(psnr(preds,target))
         self.total += target.numel()
@@ -40,7 +40,7 @@ class BaseLitModule(pl.LightningModule):
     '''
     Generic Pytorch-Lightning class that must by initialized with a pytorch module
     '''
-    def __init__(self,model,args : argspace.Namespace = None):
+    def __init__(self,model,args : argparse.Namespace = None):
         super().__init__()
         self.model = model
         self.args = vars(args) if args is not None else {}

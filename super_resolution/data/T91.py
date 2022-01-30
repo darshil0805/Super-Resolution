@@ -3,7 +3,7 @@ import argparse
 import zipfile
 from torch.utils.data import random_split
 from torchvision import transforms
-from super_resolution.base_data_module import BaseDataModule
+from super_resolution.data.base_data_module import BaseDataModule
 from torch.utils.data import Dataset
 from PIL import Image
 
@@ -64,7 +64,7 @@ class T91(BaseDataModule):
         self.dims = (1,33,33)
         self.output_dims = (1,33,33)
 
-    def prepare_data(self,*args,*kwargs):
+    def prepare_data(self,*args,**kwargs):
         '''Downloading Datasets'''
         BaseT91(self.path_train)
         BaseT91(self.path_test)

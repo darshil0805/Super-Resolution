@@ -1,4 +1,4 @@
-from pathlib import path 
+from pathlib import Path 
 from typing import Collection,Dict,Optional,Tuple,Union
 import argparse
 
