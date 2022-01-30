@@ -48,7 +48,7 @@ def _setup_parser():
     model_class.add_to_argparse(model_group)
 
     lit_model_group = parser.add_argument_group("LitModel Args")
-    base.BaseLitModel.add_to_argparse(lit_model_group)
+    base.BaseLitModule.add_to_argparse(lit_model_group)
 
     parser.add_argument("--help", "-h", action="help")
     return parser
@@ -58,11 +58,11 @@ def main():
 
     parser = _setup_parser()
     args = parser.parse_args()
-    data_class = _import_class(f"super_resolution.data.{args.data_class}")
-    model_class = _import_class(f"super_resolution.models.{args.model_class}")
+    data_class = _import_class(f"super_resolution.data.T91.{args.data_class}")
+    model_class = _import_class(f"super_resolution.models.srcnn.{args.model_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
-    lit_model_class = lit_models.BaseLitModel
+    lit_model_class = base.BaseLitModule
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(args.load_checkpoint, args=args, model=model)

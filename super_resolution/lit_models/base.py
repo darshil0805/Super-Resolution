@@ -23,18 +23,18 @@ class PSNR(Metric):
     def __init__(self,dist_sync_on_step = False):
         super().__init__(dist_sync_on_step = dist_sync_on_step)
 
-        self.add_state("batch_psnr",default = torch.tensor(0),dist_reduce_fx = "sum")
-        self.add_state("total",default = torch.tensor(0),dist_reduce_fx = "sum")
+        self.add_state("batch_psnr",default = torch.tensor(0.),dist_reduce_fx = "sum")
+        self.add_state("total",default = torch.tensor(0.),dist_reduce_fx = "sum")
 
     def update(self,preds : torch.tensor,target : torch.tensor):
-        preds,target = self._input_format(preds,target)
+        #preds,target = self._input_format(preds,target)
         #assert preds.shape = target.shape
 
         self.batch_psnr += torch.sum(psnr(preds,target))
         self.total += target.numel()
 
     def compute(self):
-        return self.correct.float()/self.total
+        return self.batch_psnr/self.total
 
 class BaseLitModule(pl.LightningModule):
     '''

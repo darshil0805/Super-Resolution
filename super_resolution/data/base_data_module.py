@@ -44,7 +44,7 @@ class BaseDataModule(pl.LightningDataModule):
 
     def config(self):
         """Return important settings of the dataset, which will be passed to instantiate models."""
-        return {"input_dims": self.dims, "output_dims": self.output_dims, "mapping": self.mapping}
+        return {"input_dims": self.dims, "output_dims": self.output_dims}
 
     def prepare_data(self, *args, **kwargs) -> None:
         """

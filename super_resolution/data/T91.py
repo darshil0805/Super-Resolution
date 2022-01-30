@@ -6,6 +6,7 @@ from torchvision import transforms
 from super_resolution.data.base_data_module import BaseDataModule
 from torch.utils.data import Dataset
 from PIL import Image
+import os
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 
@@ -16,24 +17,24 @@ opener = urllib.request.build_opener()
 opener.addheaders = [("User-agent", "Mozilla/5.0")]
 urllib.request.install_opener(opener)
 
-path_train = '../T91/train.zip'
-path_test = '../T91/valid.zip'
+path_train = 'super_resolution/data/T91/train.zip'
+path_test = 'super_resolution/data/T91/valid.zip'
 
 def extract_T91(path):
     with zipfile.ZipFile(path,"r") as z:
-        z.extractall(path = DOWNLOADED_DATA_DIRNAME + "/" + path[-9:-4])
-    return DOWNLOADED_DATA_DIRNAME + "/" + path[-9:-4]
+        z.extractall(path = DOWNLOADED_DATA_DIRNAME/path[-9:-4])
+    return DOWNLOADED_DATA_DIRNAME/path[-9:-4]
 
 class BaseT91(Dataset):
   def __init__(self,data_path,train_transform=None,target_transform = None):
-    super(T91Dataset,self).__init__()
+    super(BaseT91,self).__init__()
     self.data_path =  extract_T91(data_path)  
     self.train_transform = train_transform
     self.target_transform = target_transform
-    img_files = os.listdir(data_path)
-    img_paths = [data_path + '/'+ img_file for img_file in img_files]
+    img_files = os.listdir(self.data_path)
+    img_paths = [self.data_path/img_file for img_file in img_files]
     self.img_paths = img_paths
-    self.PIL_transform = Compose([ToPILImage()])
+    self.PIL_transform = transforms.Compose([transforms.ToPILImage()])
 
   def __len__(self):
     return len(self.img_paths)
