@@ -8,6 +8,7 @@ import pytorch_lightning as pl
 BATCH_SIZE = 1
 NUM_WORKERS = 0
 
+
 class BaseDataModule(pl.LightningDataModule):
     """
     Base DataModule.
