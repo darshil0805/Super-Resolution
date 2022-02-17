@@ -6,7 +6,7 @@ import torch
 import pytorch_lightning as pl 
 import wandb
 
-from super_resolution.lit_models import base
+from super_resolution import lit_models
 
 # Setting random seeds
 np.random.seed(42)
@@ -62,7 +62,7 @@ def main():
     model_class = _import_class(f"super_resolution.models.{args.model_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
-    lit_model_class = base.BaseLitModule
+    lit_model_class = lit_models.BaseLitModule
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(args.load_checkpoint, args=args, model=model)
