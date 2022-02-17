@@ -13,7 +13,7 @@ ONE_CYCLE_TOTAL_STEPS = 100
 
 def psnr(preds,target):
   mse = F.mse_loss(preds,target)
-  psnr = 10*torch.log10(1/mse)
+  psnr = 10*torch.log10(255*255/mse)
   return psnr
 
 class PSNR(Metric):
