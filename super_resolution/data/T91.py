@@ -3,7 +3,7 @@ import argparse
 import zipfile
 from torch.utils.data import random_split
 from torchvision import transforms
-from super_resolution.data.base_data_module import BaseDataModule
+from super_resolution.data.base_data_module import BaseDataModule,load_and_print_info
 from torch.utils.data import Dataset
 from PIL import Image
 import os
@@ -80,4 +80,5 @@ class T91(BaseDataModule):
         self.data_test = BaseT91(self.path_train,train_transform = self.train_transform,target_transform = self.target_transform)
 
     
-        
+if __name__ == "__main__":
+    load_and_print_info(MNIST)   

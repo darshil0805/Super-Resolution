@@ -37,8 +37,8 @@ def _setup_parser():
 
     # Get the data and model classes, so that we can add their specific arguments
     temp_args, _ = parser.parse_known_args()
-    data_class = _import_class(f"super_resolution.data.T91.{temp_args.data_class}")
-    model_class = _import_class(f"super_resolution.models.srcnn.{temp_args.model_class}")
+    data_class = _import_class(f"super_resolution.data.{temp_args.data_class}")
+    model_class = _import_class(f"super_resolution.models.{temp_args.model_class}")
 
     # Get data, model, and LitModel specific arguments
     data_group = parser.add_argument_group("Data Args")
@@ -58,8 +58,8 @@ def main():
 
     parser = _setup_parser()
     args = parser.parse_args()
-    data_class = _import_class(f"super_resolution.data.T91.{args.data_class}")
-    model_class = _import_class(f"super_resolution.models.srcnn.{args.model_class}")
+    data_class = _import_class(f"super_resolution.data.{args.data_class}")
+    model_class = _import_class(f"super_resolution.models.{args.model_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
     lit_model_class = base.BaseLitModule

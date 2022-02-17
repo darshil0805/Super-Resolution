@@ -8,6 +8,15 @@ import pytorch_lightning as pl
 BATCH_SIZE = 1
 NUM_WORKERS = 0
 
+def load_and_print_info(data_module_class) -> None:
+    """Load and print info."""
+    parser = argparse.ArgumentParser()
+    data_module_class.add_to_argparse(parser)
+    args = parser.parse_args()
+    dataset = data_module_class(args)
+    dataset.prepare_data()
+    dataset.setup()
+    print(dataset)
 
 class BaseDataModule(pl.LightningDataModule):
     """
