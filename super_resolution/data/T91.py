@@ -81,4 +81,4 @@ class T91(BaseDataModule):
 
     
 if __name__ == "__main__":
-    load_and_print_info(MNIST)   
+    load_and_print_info(T91)   
